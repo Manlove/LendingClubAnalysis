@@ -2,29 +2,28 @@
 
 class main():
     def __init__(self, fields):
-        file = "C:\\Users\\M113455\\Desktop\\LoanStats_2018Q3.csv"
+        #file = "C:\\Users\\M113455\\Desktop\\LoanStats_2018Q3.csv"
+        files = ["C:\\Users\\manlo\\Desktop\\LendingClubData\\LoanStats_2018Q1.csv"]
         fields = fields
         head = head_node()
-        head.retrieve_header(file)
+        head.retrieve_header(files[0])
         head.retrieve_fields(fields)
-        # for file in files:
-        #     head.parse_file(file)
+        for file in files:
+            head.parse_file(file)
 
 class head_node():
-    def __init__(self):
-        pass
 
     def parse_file(self, file_path):
-        with open(path.format(sheet), 'r', errors='ignore') as file_in:
+        with open(file_path, 'r', errors='ignore') as file_in:
             next(file_in)
             for j, line in enumerate(file_in.readlines()):
                 line = line.strip().split('","')
                 if line[16] == 'Current':
                     continue
                 records = [line[i] for i in self.field_inds]
-            print(records)
-            if i > 1:
-                break
+                print(records)
+                if j > 1:
+                    break
 
     def retrieve_fields(self, fields):
         # Takes the user inputted fields of interest and finds the indicies of the item in the header file
@@ -36,8 +35,6 @@ class head_node():
             else:
                 self.fields.append(field.lower())
                 self.field_inds.append(self.header.index(field))
-        print(self.fields)
-        print(self.field_inds)
 
     def retrieve_header(self, file_path):
         # Retrieve the header from the given .csv file and returns a list of the fields
