@@ -1,5 +1,5 @@
 # Lending Club Data Analysis
-
+import re
 class main():
     def __init__(self, fields):
         #file = "C:\\Users\\M113455\\Desktop\\LoanStats_2018Q3.csv"
@@ -16,6 +16,7 @@ class main():
             next(file_in)
             for j, line in enumerate(file_in.readlines()):
                 line = line.strip().split('","')
+                line[0] = ""
                 if line[16] == 'Current':
                     continue
                 records = [line[i] for i in self.field_inds]
@@ -49,7 +50,7 @@ class main():
                     branch.node_sum += value
                     current_node.branches.append(branch)
                     current_node = branch
-            #print(str(current_node.node_count) + " " + record)
+            print(str(current_node.node_count) + " " + record + " " + str(current_node.node_sum))
 
     def retrieve_fields(self, fields):
         # Takes the user inputted fields of interest and finds the indicies of the item in the header file
