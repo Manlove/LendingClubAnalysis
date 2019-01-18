@@ -5,6 +5,7 @@ class main():
         #file = "C:\\Users\\M113455\\Desktop\\LoanStats_2018Q3.csv"
         files = ["C:\\Users\\manlo\\Desktop\\LendingClubData\\LoanStats_2018Q1.csv"]
         fields = fields
+        self.head_node = data_node()
         self.retrieve_header(files[0])
         self.retrieve_fields(fields)
         for file in files:
@@ -21,7 +22,7 @@ class main():
                 self.fill_tree(records)
 
     def fill_tree(self, records):
-
+        self.head_node =
 
     def retrieve_fields(self, fields):
         # Takes the user inputted fields of interest and finds the indicies of the item in the header file
@@ -48,6 +49,7 @@ class head_node():
     def __init__(self):
         self.node_count = 0
         self.node_sum = 0
+        self.branches = 0
 
 class data_node():
     def __init__(self):
