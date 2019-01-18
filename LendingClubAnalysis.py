@@ -17,11 +17,14 @@ class head_node():
     def parse_file(self, file_path):
         with open(path.format(sheet), 'r', errors='ignore') as file_in:
             next(file_in)
-            for line in file_in.readlines():
+            for j, line in enumerate(file_in.readlines()):
                 line = line.strip().split('","')
                 if line[16] == 'Current':
                     continue
-
+                records = [line[i] for i in self.field_inds]
+            print(records)
+            if i > 1:
+                break
 
     def retrieve_fields(self, fields):
         # Takes the user inputted fields of interest and finds the indicies of the item in the header file
