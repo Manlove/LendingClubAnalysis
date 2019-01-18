@@ -45,12 +45,6 @@ class main():
                 line[-1] = line[-1][:-1]
             self.header = line
 
-class head_node():
-    def __init__(self):
-        self.node_count = 0
-        self.node_sum = 0
-        self.branches = 0
-
 class data_node():
     def __init__(self):
         self.node_title = ""
