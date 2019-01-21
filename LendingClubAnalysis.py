@@ -58,17 +58,15 @@ class main():
                 match = 0
                 # steps through each node in the branches list and checks if the
                 # response matches the current record
-                for branch in current_node.branches:
-                    if branch.node_title == field and branch.node_response == record:
+                branch = [i for i in current_node.branches if i.node_title == field and i.node_response == record]
+                if branch:
                         # If the field and record match the current node the node
                         # value and count are updated with the current record
-                        current_node = branch
+                        current_node = branch[0]
                         current_node += value
-                        # C
-                        match = 1
 
-
-                if match == 0:
+                else:
+                    # Creates a new node to hold the new field/ record combination
                     branch = data_node(field)
                     branch.node_response = record
                     branch += value
@@ -114,7 +112,10 @@ class data_node():
         self.node_sum += value
         return self
 
+    def __str__(self):
+        return self.node_title + "[ "+ self.node_response + " ]: " + str(self.node_sum) + " ( " + str(self.node_count) + " )"
+
 if __name__ == "__main__":
     app = main(["term", "loan_amnt", "settlement_amount"])
 
-print(len(app.head_node.branches))
+print(app.head_node)
