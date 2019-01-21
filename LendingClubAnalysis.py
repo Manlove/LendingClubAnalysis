@@ -5,11 +5,12 @@ class main():
         files = ["C:\\Users\\M113455\\Desktop\\LoanStats_2018Q3.csv"]
         #files = ["C:\\Users\\manlo\\Desktop\\LendingClubData\\LoanStats_2018Q1.csv"]
         fields = fields
-        self.head_node = data_node("head")
+        self.head_node = data_node("head", -1)
         self.retrieve_header(files[0])
         self.retrieve_fields(fields)
         for file in files:
             self.parse_file(file)
+        self.read_tree(self.head_node)
 
     def parse_file(self, file_path):
         """
@@ -47,7 +48,7 @@ class main():
                 # Create a new node for the field and adds the node to the
                 # branches list of the current_node node before rewritting
                 # the current node with the new node
-                branch = data_node(field)
+                branch = data_node(field, current_node.level + 1)
                 current_node.branches.append(branch)
                 current_node = branch
                 # Adds the record to the node along with the loan_status binary value
@@ -67,7 +68,7 @@ class main():
 
                 else:
                     # Creates a new node to hold the new field/ record combination
-                    branch = data_node(field)
+                    branch = data_node(field, current_node.level + 1)
                     branch.node_response = record
                     branch += value
                     current_node.branches.append(branch)
@@ -100,14 +101,15 @@ class main():
             self.header = line
 
     def read_tree(self, node):
-        if node.node_title != "head":
+        if node.node_title != "head" and node.node_count >= 10:
             print(node)
         if node.branches:
             for branch in node.branches:
                 self.read_tree(branch)
 
 class data_node():
-    def __init__(self, title):
+    def __init__(self, title, level):
+        self.level = level
         self.node_title = title
         self.node_response = ""
         self.node_count = 0
@@ -120,9 +122,7 @@ class data_node():
         return self
 
     def __str__(self):
-        return self.node_title + " [ "+ self.node_response + " ]: " + str(self.node_sum) + " ( " + str(self.node_count) + " )"
+        return self.level * "\t" + self.node_title + " [ "+ self.node_response + " ]: " + str(self.node_sum / self.node_count) + " ( " + str(self.node_count) + " )"
 
 if __name__ == "__main__":
-    app = main(["term", "loan_amnt", "settlement_amount"])
-
-print(app.head_node)
+    app = main(["loan_amnt"])
