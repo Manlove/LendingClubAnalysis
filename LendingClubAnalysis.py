@@ -34,29 +34,46 @@ class main():
                 self.fill_tree(records, value)
 
     def fill_tree(self, records, value):
-        current_node = self.head_node
+        """
+        Starts with a head node from class construction and builds a tree based on the
+        response data.
+        """
 
+        current_node = self.head_node
+        # Zips together the fields of interest and their corresponding records
         for record, field in zip(records, self.fields):
-            if not len(current_node.branches):
+            # If there are no branches, do:
+            if not current_node.branches:
+                # Create a new node for the field and adds the node to the
+                # branches list of the current_node node before rewritting
+                # the current node with the new node
                 branch = data_node(field)
                 current_node.branches.append(branch)
                 current_node = branch
+                # Adds the record to the node along with the loan_status binary value
                 current_node.node_response = record
                 current_node += value
+            # If there are branches in the current node
             else:
                 match = 0
+                # steps through each node in the branches list and checks if the
+                # response matches the current record
                 for branch in current_node.branches:
                     if branch.node_title == field and branch.node_response == record:
+                        # If the field and record match the current node the node
+                        # value and count are updated with the current record
                         current_node = branch
                         current_node += value
+                        # C
                         match = 1
+
+
                 if match == 0:
                     branch = data_node(field)
                     branch.node_response = record
                     branch += value
                     current_node.branches.append(branch)
                     current_node = branch
-            #print("\t" * current_node.lvl + str(current_node.node_title) + " " + record + " " + str(current_node.node_response))
 
     def retrieve_fields(self, fields):
         """
