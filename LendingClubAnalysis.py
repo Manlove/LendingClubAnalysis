@@ -5,7 +5,7 @@ class main():
         #file = "C:\\Users\\M113455\\Desktop\\LoanStats_2018Q3.csv"
         files = ["C:\\Users\\manlo\\Desktop\\LendingClubData\\LoanStats_2018Q1.csv"]
         fields = fields
-        self.head_node = data_node("head")
+        self.head_node = data_node("head", level = 0)
         self.retrieve_header(files[0])
         self.retrieve_fields(fields)
         for file in files:
@@ -28,10 +28,12 @@ class main():
 
     def fill_tree(self, records, value):
         current_node = self.head_node
+
         for record, field in zip(records, self.fields):
-            if len(current_node.branches):
-                current_node.branches.append(data_node(field))
-                current_node = current_node.branches[0]
+            if not len(current_node.branches):
+                branch = data_node(field, level = current_node.lvl + 1)
+                current_node.branches.append(branch)
+                current_node = branch
                 current_node.node_response = record
                 current_node.node_count += 1
                 current_node.node_sum += value
@@ -44,13 +46,13 @@ class main():
                         current_node.node_sum += value
                         match = 1
                 if match == 0:
-                    branch = data_node(field)
+                    branch = data_node(field, level = current_node.lvl + 1)
                     branch.node_response = record
                     branch.node_count += 1
                     branch.node_sum += value
                     current_node.branches.append(branch)
                     current_node = branch
-            print(str(current_node.node_count) + " " + record + " " + str(current_node.node_sum))
+            #print("\t" * current_node.lvl + str(current_node.node_title) + " " + record + " " + str(current_node.node_response))
 
     def retrieve_fields(self, fields):
         # Takes the user inputted fields of interest and finds the indicies of the item in the header file
@@ -82,4 +84,6 @@ class data_node():
         self.branches = []
 
 if __name__ == "__main__":
-    app = main(["id", "member_id", "loan_amnt", "settlement_amount"])
+    app = main(["term", "loan_amnt", "settlement_amount"])
+
+print(len(app.head_node.branches))
