@@ -99,6 +99,13 @@ class main():
                 line[-1] = line[-1][:-1]
             self.header = line
 
+    def read_tree(self, node):
+        if node.node_title != "head":
+            print(node)
+        if node.branches:
+            for branch in node.branches:
+                self.read_tree(branch)
+
 class data_node():
     def __init__(self, title):
         self.node_title = title
@@ -113,7 +120,7 @@ class data_node():
         return self
 
     def __str__(self):
-        return self.node_title + "[ "+ self.node_response + " ]: " + str(self.node_sum) + " ( " + str(self.node_count) + " )"
+        return self.node_title + " [ "+ self.node_response + " ]: " + str(self.node_sum) + " ( " + str(self.node_count) + " )"
 
 if __name__ == "__main__":
     app = main(["term", "loan_amnt", "settlement_amount"])
