@@ -104,6 +104,7 @@ class main():
             self.header = line
 
     def read_tree(self, node, nodes):
+
         if node.node_title != "head" and node.node_count >= 10:
             nodes.append(node)
         if node.branches:
@@ -117,7 +118,6 @@ class main():
                     break
                 else:
                     if nodes[i].get_percent() >= nodes[i + 1].get_percent():
-                        #print(nodes[i].get_sum(), nodes[i+1].get_sum())
                         temp_node = nodes[i+1]
                         nodes[i+1] = nodes[i]
                         nodes[i] = temp_node
