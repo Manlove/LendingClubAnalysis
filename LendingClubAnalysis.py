@@ -10,7 +10,10 @@ class main():
         self.retrieve_fields(fields)
         for file in files:
             self.parse_file(file)
-        self.read_tree(self.head_node)
+        nodes = []
+        self.read_tree(self.head_node, nodes)
+        nodes = self.sort_nodes(nodes)
+        [print(node) for node in nodes]
 
     def parse_file(self, file_path):
         """
@@ -100,24 +103,26 @@ class main():
                 line[-1] = line[-1][:-1]
             self.header = line
 
-    def read_tree(self, node):
-        nodes = []
+    def read_tree(self, node, nodes):
         if node.node_title != "head" and node.node_count >= 10:
             nodes.append(node)
         if node.branches:
             for branch in node.branches:
-                self.read_tree(branch)
+                self.read_tree(branch, nodes)
 
     def sort_nodes(self, nodes):
-        for j in range(len(nodes), 0, -1):
+        for j in range(len(nodes) - 1, 0, -1):
             for i in range(0, len(nodes)):
                 if i >= j:
                     break
                 else:
-                    if nodes[i].get_sum() >= nodes[i + 1].get_sum():
+                    if nodes[i].get_percent() >= nodes[i + 1].get_percent():
+                        #print(nodes[i].get_sum(), nodes[i+1].get_sum())
                         temp_node = nodes[i+1]
                         nodes[i+1] = nodes[i]
                         nodes[i] = temp_node
+        return nodes
+
 class data_node():
     def __init__(self, title, level):
         self.level = level
@@ -137,6 +142,9 @@ class data_node():
 
     def get_sum(self):
         return self.node_sum
+
+    def get_percent(self):
+        return self.node_sum/self.node_count
 
 if __name__ == "__main__":
     app = main(["loan_amnt"])
