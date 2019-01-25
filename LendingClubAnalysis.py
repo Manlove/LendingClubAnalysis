@@ -101,12 +101,23 @@ class main():
             self.header = line
 
     def read_tree(self, node):
+        nodes = []
         if node.node_title != "head" and node.node_count >= 10:
-            print(node)
+            nodes.append(node)
         if node.branches:
             for branch in node.branches:
                 self.read_tree(branch)
 
+    def sort_nodes(self, nodes):
+        for j in range(len(nodes), 0, -1):
+            for i in range(0, len(nodes)):
+                if i >= j:
+                    break
+                else:
+                    if nodes[i].get_sum() >= nodes[i + 1].get_sum():
+                        temp_node = nodes[i+1]
+                        nodes[i+1] = nodes[i]
+                        nodes[i] = temp_node
 class data_node():
     def __init__(self, title, level):
         self.level = level
@@ -123,6 +134,9 @@ class data_node():
 
     def __str__(self):
         return self.level * "\t" + self.node_title + " [ "+ self.node_response + " ]: " + str(self.node_sum / self.node_count) + " ( " + str(self.node_count) + " )"
+
+    def get_sum(self):
+        return self.node_sum
 
 if __name__ == "__main__":
     app = main(["loan_amnt"])
